@@ -1,0 +1,50 @@
+Что вы должны сделать в консоли Django?
+
+1. Создать двух пользователей (с помощью метода User.objects.create_user('username')).
+2. Создать два объекта модели Author, связанные с пользователями.
+3. Добавить 4 категории в модель Category.
+4. Добавить 2 статьи и 1 новость.
+5. Присвоить им категории (как минимум в одной статье/новости должно быть не меньше 2 категорий).
+6. Создать как минимум 4 комментария к разным объектам модели Post (в каждом объекте должен быть как минимум один комментарий).
+7. Применяя функции like() и dislike() к статьям/новостям и комментариям, скорректировать рейтинги этих объектов.
+8. Обновить рейтинги пользователей.
+9. Вывести username и рейтинг лучшего пользователя (применяя сортировку и возвращая поля первого объекта).
+10.Вывести дату добавления, username автора, рейтинг, заголовок и превью лучшей статьи, основываясь на лайках/дислайках к этой статье.
+11.Вывести все комментарии (дата, пользователь, рейтинг, текст) к этой статье.
+
+
+Команды:
+
+1. User.objects.create_user('Александр'), 
+   User.objects.create_user('Ольга'), 
+   User.objects.create_user('Петя'), 
+   User.objects.create_user('Маша')
+2. Author.objects.create(user=User.objects.get(username='Александр')), 
+   Author.objects.create(user=User.objects.get(username='Ольга'))
+3. Category.objects.create(category='Спорт'), 
+   Category.objects.create(category='Политика'), 
+   Category.objects.create(category='Шоу-бизнес'), 
+   Category.objects.create(category='Разное')
+4. Post.objects.create(article=Post.news, author=Author.objects.get(user=User.objects.get(username='Александр')), heading='Новость 1', text='Текст новости 1')
+   Post.objects.create(article=Post.POST, author=Author.objects.get(user=User.objects.get(username='Ольга')), heading='Статья 1', text='Текст статьи 1')
+   Post.objects.create(article=Post.POST, author=Author.objects.get(user=User.objects.get(username='Ольга')), heading='Статья 2', text='Текст статьи 2')
+5. PostCategory(post=Post.objects.get(id=1), category=Category(id=)),
+   PostCategory(post=Post.objects.get(id=2), category=Category(id=3)),
+   PostCategory(post=Post.objects.get(id=3), category=Category(id=4)),
+   PostCategory(post=Post.objects.get(id=1), category=Category(id=2)),
+   PostCategory(post=Post.objects.get(id=2), category=Category(id=4)),
+   PostCategory(post=Post.objects.get(id=3), category=Category(id=1))
+6. Comment.objects.create(post=Post.objects.get(id='post_id'), user=User.objects.get(username='username'))
+   #таких команд 12 штук в соответствии с данными в таблице NewsPortal_comment
+7. c_1 = Comment.objects.get(id=11),
+   c_1.like()
+   #далее по аналогии 
+8. Author.objects.get(id=1).update_rating(),
+   Author.objects.get(id=2).update_rating()
+9. Author.objects.order_by('-rating')[0].user.username
+   Author.objects.order_by('-rating')[0].rating
+10.Post.best_post()
+11.Comment.comments_best_post()
+
+
+
